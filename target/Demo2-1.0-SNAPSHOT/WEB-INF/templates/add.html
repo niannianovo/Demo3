@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加课程</title>
+    <link th:href="@{/static/css/add.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div id="add">
+        <h1>Add Course</h1>
+        <div id="form">
+            <form th:action="@{/Course}" method="post" >
+                <label for="name">课程名：</label>
+                <input type="text" name="name" id="name" onchange="namerepeat()">
+                <span id="nameRepeat"></span><br>
+                <label for="hours">课时数：</label>
+                <input type="text" name="hours" id="hours"><br>
+                <label for="sid">开课学院：</label>
+                <input type="text" name="sid" id="sid"><br>
+                <input type="submit" id="submit" value="添加">
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/static/js/jquery-1.8.2.min.js}"></script>
+    <script type="text/javascript">
+            function namerepeat() {
+                $.ajax({
+                    url:"http://localhost:2003/Demo2/Course/checkName",   //请求地址
+                    type:"post",   //请求方法
+                    data:{"name":$("#name").val()},   //要发送的数据,相当于表单提交的数据，json形式。
+                    dataType:"html",   //期待返回的数据类型，也可以理解为请求的数据类型
+                    success:function (data) {  //成功时的处理。参数表示返回的数据
+                        $("#nameRepeat").html(data);
+                    }
+                });
+            }
+
+    </script>
+
+</body>
+</html>

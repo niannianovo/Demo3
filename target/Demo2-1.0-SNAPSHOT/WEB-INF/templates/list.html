@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>课程列表</title>
+    <link th:href="@{/static/css/list.css}" type="text/css" rel="stylesheet">
+    <script type="text/javascript" th:src="@{static/js/vue.js}"></script>
+</head>
+<body>
+    <div id="list">
+        <h1>Course Info</h1>
+        <a th:href="@{/toAdd}" id="toAdd">新增课程</a>
+        <table id="coursetable">
+            <tr>
+                <th>课程名</th>
+                <th>课程封面</th>
+                <th>课时数</th>
+                <th>开课学院</th>
+                <th>选项</th>
+            </tr>
+            <!--遍历courses-->
+            <tr th:each="course : ${courses}">
+                <td hidden="hidden" th:text="${course.id}"></td>
+                <td th:text="${course.name}"></td>
+                <td>
+                    <img th:src="@{'/showPic/'+${course.img}}">
+                </td>
+                <td th:text="${course.hours}"></td>
+                <td th:text="${course.sid}"></td>
+                <td>
+                    <a th:href="@{'/Course/'+${course.id}}">编辑</a>
+                    <a @click="deleteCourse" th:href="@{'/Course/'+${course.id}}">删除</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+        <form id="deleteForm" method="post">
+            <input type="hidden" name="_method" value="delete">
+        </form>
+
+    <script type="text/javascript">
+        var vue = new Vue({
+            el:"#coursetable",
+            methods:{
+                deleteCourse:function(event) {
+                    var deleteForm = document.getElementById("deleteForm");
+                    deleteForm.action = event.target.href;
+                    deleteForm.submit();
+                    event.preventDefault();
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

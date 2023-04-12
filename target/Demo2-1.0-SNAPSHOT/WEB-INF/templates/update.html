@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>修改课程</title>
+  <link th:href="@{/static/css/add.css}" type="text/css" rel="stylesheet">
+</head>
+<body>
+<div id="add">
+  <h1>Update Course</h1>
+  <div id="form">
+    <form th:action="@{/Course}" method="post">
+      <input type="hidden" name="_method" value="put">
+      <input type="hidden" name="id" th:value="${course.id}">
+      <label for="name">课程封面：</label>
+      <img th:src="@{'/showPic/'+${course.img}}">
+      <label for="name">课程名：</label>
+      <input type="text" name="name" id="name" onchange="namerepeat()" th:value="${course.name}">
+      <span id="nameRepeat"></span><br>
+      <label for="hours">课时数：</label>
+      <input type="text" name="hours" id="hours" th:value="${course.hours}"><br>
+      <label for="sid">开课学院：</label>
+      <input type="text" name="sid" id="sid" th:value="${course.sid}"><br>
+      <input type="submit" id="submit" value="修改">
+    </form>
+  </div>
+</div>
+
+<script th:src="@{/static/js/jquery-1.8.2.min.js}"></script>
+<script type="text/javascript">
+  var orgin = document.querySelector("#name").value;
+  function namerepeat() {
+    var name = document.getElementById("name").value;
+    if(name!=orgin) {
+      $.ajax({
+        url:"http://localhost:2003/Course/checkName",   //请求地址
+        type:"post",   //请求方法
+        data:{"name":$("#name").val()},   //要发送的数据,相当于表单提交的数据，json形式。
+        dataType:"html",   //期待返回的数据类型，也可以理解为请求的数据类型
+        success:function (data) {  //成功时的处理。参数表示返回的数据
+          $("#nameRepeat").html(data);
+        }
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
